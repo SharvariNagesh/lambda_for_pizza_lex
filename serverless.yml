@@ -1,0 +1,20 @@
+
+service: lambda
+
+
+provider:
+  name: aws
+  runtime: python3.6
+  # role: arn:aws:iam::
+
+  # iamRoleStatements:
+  #   -  Effect: "Allow"
+  #       Action:
+  #         - "s3:PutObject"
+functions:
+  pizzaOrder:
+    handler: pizzaOrder.lambda_handler
+    # events:
+    #  - http:
+    #      path: users/create
+    #      method: get

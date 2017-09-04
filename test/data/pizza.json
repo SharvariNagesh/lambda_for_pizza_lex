@@ -1,0 +1,21 @@
+{
+  "messageVersion": "1.0",
+  "invocationSource": "FulfillmentCodeHook",
+  "userId": "73pd77wywew2lqs0818gyrzl642ufp3r",
+  "sessionAttributes": {},
+  "bot": {
+    "name": "pizzaOrderTest",
+    "alias": "None",
+    "version": "$LATEST"
+  },
+  "outputDialogMode": "Text",
+  "currentIntent": {
+    "name": "PizzaOrder",
+    "slots": {
+      "pizzaType": "veg",
+      "pizzaSize": "small"
+    },
+    "confirmationStatus": "None"
+  },
+  "inputTranscript": "veg"
+}

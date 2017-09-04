@@ -31,23 +31,8 @@ def check_authority(event):
         }
 
 def getPizzaSize(event):
-    if(event['currentIntent']['slots']): # and event['currentIntent']['slots']['pizzaSize']):
+    if(event['currentIntent']['slots']):
        return event['currentIntent']['slots']['pizzaSize']
-    else:
-       return None
-
-
-def getPizzaType(event):
-    if(event['currentIntent']['slots']): # and event['currentIntent']['slots']['pizzaType']):
-       return event['currentIntent']['slots']['pizzaType']
-    else:
-       return None
-
-def getPizzaCrust(event):
-    if(event['currentIntent']['slots']): # and event['currentIntent']['slots']['pizzaType']):
-       return event['currentIntent']['slots']['pizzaCrust']
-    else:
-       return None
 
 def validateSize(size):
     sizes_available = ['small', 'medium', 'large']
@@ -56,14 +41,14 @@ def validateSize(size):
 
     return True
 
-def orderPizza(size, type, crust):
+def orderPizza(size):
     response = {
         "dialogAction": {
             "type": "Close",
             "fulfillmentState": "Fulfilled",
             "message": {
                 "contentType": "PlainText",
-                "content": "Thank you for ordering {} {} {} crust pizza with us." . format(size, type,crust)
+                "content": "Thank you for ordering {} pizza with us." . format(size)
             }
         }
     }
@@ -89,47 +74,20 @@ def elisitSize(event):
     }
     return response
 
-def elicitCrust(event):
-    logger.debug("Inside elicitCrust")
-    response = {
-        "dialogAction": {
-            "type": "ElicitSlot",
-            "message": {
-                "contentType": "PlainText",
-                "content": "What crust would you like?"
-            },
-            "intentName": "PizzaOrder",
-            "slots": {
-                "pizzaSize": getPizzaSize(event),
-                "pizzaType": getPizzaType(event),
-                "pizzaCrust": "None"
-            },
-            "slotToElicit" : "pizzaCrust"
-        }
-
-    }
-    return response
-
 def lambda_handler(event, context):
+    # This is deployed from the commandline using serverless
     logger.debug('slots={}'.format(event))
-    print ('slots={}'.format(event))
-    # response = check_authority(event)
-    # if(not response['isValid']):
-    #     return error_message(response['message'])
+
+    response = check_authority(event)
+    if(not response['isValid']):
+        return error_message(response['message'])
 
     size = getPizzaSize(event)
     if(size == None):
        return elisitSize(event)
-
-    crust = getPizzaCrust(event)
-    if(crust == None):
-        logger.debug('No crust information. Sending an elicit request')
-        return elicitCrust(event)
-
     sizeValid = validateSize(size)
-    type = getPizzaType(event)
-    if(crust !=None):
-        return orderPizza(size, type, crust)
+    if(sizeValid):
+        return orderPizza(size)
     else:
         return elisitSize(event)
 

@@ -12,9 +12,8 @@ provider:
   #       Action:
   #         - "s3:PutObject"
 functions:
-  pizzaOrder2:
-    name: pizzaOrder2
-    handler: pizzaOrder2.lambda_handler
+  pizzaOrder:
+    handler: pizzaOrder.lambda_handler
     # events:
     #  - http:
     #      path: users/create
